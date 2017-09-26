@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>WorldForWeb</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+</head>
+
+<body>
+  <input type="file" name="file" id="file">
+  <div>
+    <canvas id="f0" height="400" width="800"></canvas>
+  </div>
+
+  <script src="dist/bundle.js"></script>
+  <script>
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    window.playAudio = {};
+    window.playAudio.context = new AudioContext();
+    // 今度再生に対応
+    window.playAudio.stream = window.playAudio.context.createMediaStreamDestination();
+
+    World.WorldWeb.Initialize()
+      .then(() => {
+        console.log('Initialized');
+        // Show Modal
+      })
+      .catch(err => {
+        console.error(err);
+      });
+
+    let current_buffer;
+    let current_graph;
+    var worldParameters;
+
+    let displayF0 = () => {
+      let data = {
+        type: 'line',
+        data: {
+          labels: Array.from(new Array(worldParameters.f0_length)).map((v, i) => i + 1),
+          datasets: [
+            {
+              label: "F0",
+              data: Array.prototype.slice.call(worldParameters.f0)
+            },
+          ]
+        }
+      };
+      let ctx = document.querySelector('#f0').getContext('2d');
+      current_graph = new Chart(ctx, data);
+    }
+
+    let decodeAudioBuffer = (buffer) => {
+      let context = window.playAudio.context;
+      return context.decodeAudioData(buffer)
+        .then((decodedBuffer) => {
+          current_buffer = decodedBuffer;
+        });
+    }
+
+    let file = document.getElementById('file');
+    if (window.File && window.FileReader && window.FileList) {
+      function loadWavFile(e) {
+        let waveFile = e.target.files[0];
+        console.dir(waveFile);
+
+        let reader = new FileReader();
+        reader.onload = () => {
+          decodeAudioBuffer(reader.result)
+            .then(() => {
+              // Change UI button
+              console.log('Finish decode buffer');
+            })
+            .then(() => {
+              worldParameters = World.WorldWeb.GetSpeechFeatures(new Float64Array(current_buffer.getChannelData(0)), current_buffer.sampleRate);
+            })
+            .then(() => {
+              console.log('Finish Analyze');
+              console.dir(worldParameters);
+            })
+            .then(() => {
+              displayF0();
+            })
+        }
+        reader.readAsArrayBuffer(waveFile);
+      }
+      file.addEventListener('change', loadWavFile, false);
+    } else {
+      file.style.display = 'none';
+      result.innerHTML = 'File APIを使用することが出来ません，対応ブラウザでご確認ください．';
+    }
+  </script>
+</body>
+
+</html>
