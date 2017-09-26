@@ -5,7 +5,7 @@ export default class WorldWeb {
         WorldWeb.isInitialized = false;
 
         return new Promise((resolve, reject) => {
-            fetch('../wasm/world.wasm')
+            fetch('./wasm/world.wasm') // gh-pages向け
             .then(response => {
                 if (!response.ok) {
                     throw Error(response.statusText);

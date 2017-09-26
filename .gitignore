@@ -58,8 +58,9 @@ typings/
 .env
 
 # wasm build image
-wasm/world.wasm
+wasm/*
+!wasm/world.wasm
 wasm/world.js
 
 # webpacked ignore
-dist/
+#dist/
