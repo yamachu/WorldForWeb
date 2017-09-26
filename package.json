@@ -4,7 +4,9 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./wasm/build.sh && webpack",
+    "dev": "./wasm/build.sh && webpack --watch",
+    "build": "./wasm/build.sh && webpack -p",
+    "debug": "./wasm/build.sh && webpack -d",
     "host": "python3 -m http.server"
   },
   "author": "yamachu",

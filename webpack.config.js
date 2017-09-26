@@ -22,7 +22,6 @@ module.exports = {
       }
     ]
   },
-  devtool: 'inline-source-map',
   node: {
       fs: 'empty'
   }
