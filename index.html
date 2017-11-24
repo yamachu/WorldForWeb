@@ -73,8 +73,8 @@
               // Change UI button
               console.log('Finish decode buffer');
             })
-            .then(() => {
-              worldParameters = World.WorldWeb.GetSpeechFeatures(new Float64Array(current_buffer.getChannelData(0)), current_buffer.sampleRate);
+            .then(async () => {
+              worldParameters = await World.WorldWeb.GetSpeechFeaturesAsync(new Float64Array(current_buffer.getChannelData(0)), current_buffer.sampleRate);
             })
             .then(() => {
               console.log('Finish Analyze');
