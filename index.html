@@ -4,7 +4,25 @@
 <head>
   <meta charset="UTF-8" />
   <title>WorldForWeb</title>
+  <script>
+    // http://phiary.me/electron-jquery-script-tag-load/
+    // for electron
+    if (typeof module !== 'undefined') {
+      window.__tempModuleExports__ = module.exports;
+      module.exports = false;
+    }
+  </script>
+
   <script src="https://code.highcharts.com/highcharts.js"></script>
+
+  <script>
+    // for electron
+    if (window.__tempModuleExports__) {
+      module.exports = window.__tempModuleExports__;
+      window.__tempModuleExports__ = null;
+      delete window.__tempModuleExports__;
+    }
+  </script>
 </head>
 
 <body>
