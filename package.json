@@ -7,7 +7,8 @@
     "dev": "./wasm/build.sh && webpack --watch",
     "build": "./wasm/build.sh && webpack -p",
     "debug": "./wasm/build.sh && webpack -d",
-    "host": "python3 -m http.server"
+    "host": "python3 -m http.server",
+    "electron": "electron src/index.js"
   },
   "author": "yamachu",
   "license": "BSD-3-Clause",
@@ -16,5 +17,8 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "webpack": "^3.6.0"
+  },
+  "dependencies": {
+    "electron": "^1.7.9"
   }
 }

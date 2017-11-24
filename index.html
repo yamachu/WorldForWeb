@@ -23,6 +23,14 @@
       delete window.__tempModuleExports__;
     }
   </script>
+
+  <script>
+    // for electron 
+    if (window && window.process && window.process.type === 'renderer') {
+      const { webFrame } = require('electron');
+      webFrame.registerURLSchemeAsPrivileged('file');
+    }
+  </script>
 </head>
 
 <body>
